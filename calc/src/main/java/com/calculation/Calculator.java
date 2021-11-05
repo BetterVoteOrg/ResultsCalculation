@@ -7,13 +7,7 @@ enum VotingSystem {RCV, STAR, PLURALITY}
  *
  */
 public class Calculator 
-{
-
-    public static int returnFive()
-    {
-        return 5;
-    }
-    
+{   
     // The first dimension of votes diffentiates each ballot. The second dimension is the vote on the ballot.
     public static String[] calculate(VotingSystem votingSystem, String[] choices, int[][] votes) 
     {
@@ -25,6 +19,7 @@ public class Calculator
             case STAR:
                 break;
             case PLURALITY:
+                outcome = PluralityCalc.calculate(choices, votes);
                 break;
             default:
                 System.out.println("ERROR: INVALID VOTING SYSTEM");
