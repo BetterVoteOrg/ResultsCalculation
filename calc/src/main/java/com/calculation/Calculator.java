@@ -13,8 +13,10 @@ public class Calculator
     {
         return 5;
     }
-
-    public static String[] calculate(VotingSystem votingSystem, String[] choices, int[][] votes) {
+    
+    // The first dimension of votes diffentiates each ballot. The second dimension is the vote on the ballot.
+    public static String[] calculate(VotingSystem votingSystem, String[] choices, int[][] votes) 
+    {
         String[] outcome = new String[2];
         
         switch(votingSystem) {
