@@ -2,7 +2,7 @@ package com.calculation;
 
 import java.util.ArrayList;
 
-public class PluralityCalc 
+public class ScoreCalc 
 {
     private static boolean tie;
 
@@ -47,7 +47,13 @@ public class PluralityCalc
 
         for (int i=0; i < votes.length; i++)
         {
-            tally[votes[i][0]]++;
+            for(int j=0; j < choices.length; j++)
+            {
+                if (votes[i][j] < 0 || votes[i][j] > 5)
+                    System.out.println("ERROR: SCORE OUT OF BOUNDS");
+                else
+                    tally[j] = tally[j] + votes[i][j];
+            }
         }
 
         winnerIndex = findMaxIndex(tally);
@@ -68,10 +74,7 @@ public class PluralityCalc
 
         for (int i=0; i < tally.length; i++)
         {
-            if (tally[i] != 1)
-                results = results + choices[i] + " got " + tally[i] + " votes.\n";
-            else
-                results = results + choices[i] + " got " + tally[i] + " vote.\n";
+            results = results + choices[i] + " received a score of " + tally[i] + ".\n";
         }
 
         outcome[0] = winner;
