@@ -1,0 +1,14 @@
+com\bettervote\resultcalculation\TestContext$1.class
+com\bettervote\resultcalculation\TestContext.class
+com\bettervote\resultcalculation\TestUtils$DynamodbEventMixin$AttributeValueMixIn.class
+com\bettervote\resultcalculation\TestUtils$1.class
+com\bettervote\resultcalculation\TestUtils$DateTimeDeserializer.class
+com\bettervote\resultcalculation\TestUtils.class
+com\bettervote\resultcalculation\TestUtils$DynamodbEventMixin$StreamRecordMixin.class
+com\bettervote\resultcalculation\TestContext$TestLogger.class
+com\bettervote\resultcalculation\TestUtils$TestJacksonMapperModule.class
+com\bettervote\resultcalculation\TestUtils$UpperCaseRecordsPropertyNamingStrategy.class
+com\bettervote\resultcalculation\TestUtils$DynamodbEventMixin$RecordMixin.class
+com\bettervote\resultcalculation\LambdaFunctionHandlerTest.class
+com\bettervote\resultcalculation\TestUtils$DynamodbEventMixin.class
+com\bettervote\resultcalculation\TestUtils$DateTimeSerializer.class
