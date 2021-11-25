@@ -2,10 +2,6 @@ package com.calculation;
 
 enum VotingSystem {RCV, STAR, PLURALITY}
 
-/**
- * Hello world!
- *
- */
 public class Calculator 
 {   
     // The first dimension of votes diffentiates each ballot. The second dimension is the vote on the ballot.
@@ -17,6 +13,7 @@ public class Calculator
             case RCV:
                 break;
             case STAR:
+                outcome = StarCalc.calculate(choices, votes);
                 break;
             case PLURALITY:
                 outcome = PluralityCalc.calculate(choices, votes);

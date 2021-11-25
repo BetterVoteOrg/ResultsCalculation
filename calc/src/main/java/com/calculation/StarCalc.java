@@ -32,13 +32,14 @@ public class StarCalc {
                 tieTwo = true;
         }
 
+        // Finds the index of the second greatest number in the array when the first element of the array is the first greatest number.
         if (maxIndex[0] == 0)
         {
             maxIndex[1] = 1;
 
             for(int i=2; i < array.length; i++)
             {
-                if (i != maxIndex[0])
+                if (array[i] != maxIndex[0])
                 {
                     if (array[i] > maxIndex[1])
                         maxIndex[1] = i;
@@ -96,7 +97,7 @@ public class StarCalc {
 
     public static ArrayList<Integer> eliminationRounds(String[] choices, ArrayList<Integer> tiedWinnerIndexes, int[][] votes, int desiredSize)
     {
-        while (tiedWinnerIndexes.size() != desiredSize)
+        while (tiedWinnerIndexes.size() > desiredSize)
         {
             int[] tally = new int[votes[0].length];
 
@@ -106,7 +107,6 @@ public class StarCalc {
 
                 for (int j=1; j < tiedWinnerIndexes.size(); j++)
                 {
-                    // ADD CODE TO CHECK FOR TIES
                     if (votes[i][tiedWinnerIndexes.get(j)] < votes[i][min])
                         min = tiedWinnerIndexes.get(j);
                 }
@@ -115,41 +115,116 @@ public class StarCalc {
             }
 
             int eliminationIndex = 0;
+            boolean eliminationTie = false;
             for (int i=1; i < tally.length; i++)
             {
                 if (tally[i] < tally[eliminationIndex])
+                {
                     eliminationIndex = i;
+                    eliminationTie = false;
+                }
+                else if (tally[i] == tally[eliminationIndex])
+                    eliminationTie = true;
             }
 
-            // ADD CODE TO HANDLE CASE FOR 1 BALLOT SO IT DOESN'T READ 1 BALLOTS
-            if (desiredSize == 2)
+            if (eliminationTie == true)
             {
-                results = results + "To break a tie for first place, an elimination round was held where ";
+                ArrayList<Integer> tiedEliminationIndexes = new ArrayList<Integer>();
+                for (int i = 0; i < tally.length; i++)
+                {
+                    if (tally[i] == tally[eliminationIndex])
+                        tiedEliminationIndexes.add(i);
+                }
 
-                for (int i = 0; i < tiedWinnerIndexes.size()-1; i++)
-                    results = results + choices[tiedWinnerIndexes.get(i)] + " scored lowest on " + Math.abs(tally[tiedWinnerIndexes.get(i)]) + " ballots, ";
-                results = results + "and " + choices[tiedWinnerIndexes.get(tiedWinnerIndexes.size()-1)] + " scored lowest on " + Math.abs(tally[tiedWinnerIndexes.get(tiedWinnerIndexes.size()-1)]) + " ballots. ";
-                results = results + "Therefore " + choices[eliminationIndex] + " was eliminated from consideration in the runoff.\n";
-            }
-            else if (desiredSize == 1)
-            {
-                results = results + "To break a tie for second place, an elimination round was held where ";
+                if (tiedWinnerIndexes.size() - tiedEliminationIndexes.size() >= 1)
+                {
+                    if (desiredSize == 2)
+                        results = results + "To break a tie for first place, an elimination round was held where ";
+                    else if (desiredSize == 1)
+                        results = results + "To break a tie for second place, an elimination round was held where ";
+                    else
+                        System.out.println("ERROR: INVALID DESIRED SIZE FOR ELIMINATION ROUNDS"); // REPLACE WITH PROPER ERROR HANDLING
 
-                for (int i = 0; i < tiedWinnerIndexes.size()-1; i++)
-                    results = results + choices[tiedWinnerIndexes.get(i)] + " scored lowest on " + Math.abs(tally[tiedWinnerIndexes.get(i)]) + " ballots, ";
-                // ADD CODE TO HANDLE CASE WHERE THERE ARE TWO CHOICES: 1 AND 2. NOT 1, AND 2
-                results = results + "and " + choices[tiedWinnerIndexes.get(tiedWinnerIndexes.size()-1)] + " scored lowest on " + Math.abs(tally[tiedWinnerIndexes.get(tiedWinnerIndexes.size()-1)]) + " ballots. ";
-                results = results + "Therefore " + choices[eliminationIndex] + " was eliminated from consideration in the runoff.\n";
+                    results = results + choices[tiedWinnerIndexes.get(0)] + " scored lowest on " + Math.abs(tally[tiedWinnerIndexes.get(0)]) + " ballot(s)";
+                    for (int i = 1; i < tiedWinnerIndexes.size()-1; i++) 
+                        results = results + ", " + choices[tiedWinnerIndexes.get(i)] + " scored lowest on " + Math.abs(tally[tiedWinnerIndexes.get(i)]) + " ballot(s)";
+                    results = results + " and " + choices[tiedWinnerIndexes.get(tiedWinnerIndexes.size()-1)] + " scored lowest on " + Math.abs(tally[tiedWinnerIndexes.get(tiedWinnerIndexes.size()-1)]) + " ballot(s). ";
+                    results = results + "Therefore " + choices[tiedEliminationIndexes.get(0)];
+
+
+                    for (int i = 1; i < tiedEliminationIndexes.size() - 1; i++)
+                        results = results + ", " + choices[tiedEliminationIndexes.get(i)];
+
+                    results = results + " and " + choices[tiedEliminationIndexes.get(tiedEliminationIndexes.size()-1)] + " was eliminated from consideration in the runoff.\n";
+
+                    if (desiredSize == 2 && tiedWinnerIndexes.size() - tiedEliminationIndexes.size() == 1)
+                    {
+                        results = results + "This elimination round made a runoff unnecessary.\n";
+                    }
+
+                    for(int i=0; i < tiedEliminationIndexes.size(); i++)
+                    {
+                        for (int j=0; j < tiedWinnerIndexes.size(); j++)
+                        {
+                            if (tiedWinnerIndexes.get(j) == tiedEliminationIndexes.get(i))
+                                tiedWinnerIndexes.remove(j);
+                        }
+                    }
+                }
+                else
+                {
+                    if (desiredSize == 2)
+                        results = results + "To attempt to break a tie for first place, an elimination round was held where ";
+                    else if (desiredSize == 1)
+                        results = results + "To attempt to break a tie for second place, an elimination round was held where ";
+                    else
+                        System.out.println("ERROR: INVALID DESIRED SIZE FOR ELIMINATION ROUNDS"); // REPLACE WITH PROPER ERROR HANDLING
+
+                    results = results + choices[tiedWinnerIndexes.get(0)] + " scored lowest on " + Math.abs(tally[tiedWinnerIndexes.get(0)]) + " ballot(s)";
+                    for (int i = 1; i < tiedWinnerIndexes.size()-1; i++) 
+                        results = results + ", " + choices[tiedWinnerIndexes.get(i)] + " scored lowest on " + Math.abs(tally[tiedWinnerIndexes.get(i)]) + " ballot(s)";
+                    results = results + " and " + choices[tiedWinnerIndexes.get(tiedWinnerIndexes.size()-1)] + " scored lowest on " + Math.abs(tally[tiedWinnerIndexes.get(tiedWinnerIndexes.size()-1)]) + " ballot(s). ";
+
+                    results = results + "This tie prevented any candidates from being eliminated. Therefore, ";
+
+                    if (desiredSize == 2)
+                        results = results + "there is a tie for the winner of the poll.\n";
+                    else if (desiredSize == 1)
+                        results = results + "the winner of the poll is the choice that recieved the highest score.\n";
+                    else
+                        System.out.println("ERROR: INVALID DESIRED SIZE FOR ELIMINATION ROUNDS"); // REPLACE WITH PROPER ERROR HANDLING
+
+                    // Exits the while loop
+                    desiredSize = tiedWinnerIndexes.size() + 1;
+                }
             }
             else
             {
-                System.out.println("ERROR: INVALID DESIRED SIZE FOR ELIMINATION ROUNDS");
-            }
+                if (desiredSize == 2)
+                {
+                    results = results + "To break a tie for first place, an elimination round was held where ";
+                }
+                else if (desiredSize == 1)
+                {
+                    results = results + "To break a tie for second place, an elimination round was held where ";
+                }
+                else
+                {
+                    System.out.println("ERROR: INVALID DESIRED SIZE FOR ELIMINATION ROUNDS"); // REPLACE WITH PROPER ERROR HANDLING
+                }
 
-            for(int i=0; i < tiedWinnerIndexes.size(); i++)
-            {
-                if (tiedWinnerIndexes.get(i) == eliminationIndex)
-                    tiedWinnerIndexes.remove(i);
+                results = results + choices[tiedWinnerIndexes.get(0)] + " scored lowest on " + Math.abs(tally[tiedWinnerIndexes.get(0)]) + " ballot(s)";
+                for (int i = 1; i < tiedWinnerIndexes.size()-1; i++) 
+                    results = results + ", " + choices[tiedWinnerIndexes.get(i)] + " scored lowest on " + Math.abs(tally[tiedWinnerIndexes.get(i)]) + " ballot(s)";
+                results = results + " and " + choices[tiedWinnerIndexes.get(tiedWinnerIndexes.size()-1)] + " scored lowest on " + Math.abs(tally[tiedWinnerIndexes.get(tiedWinnerIndexes.size()-1)]) + " ballot(s). ";
+                
+                results = results + "Therefore " + choices[eliminationIndex] + " was eliminated from consideration in the runoff.\n";
+
+                for(int i=0; i < tiedWinnerIndexes.size(); i++)
+                {
+                    if (tiedWinnerIndexes.get(i) == eliminationIndex)
+                        tiedWinnerIndexes.remove(i);
+                }
             }
         }
 
@@ -171,7 +246,7 @@ public class StarCalc {
             for(int j=0; j < choices.length; j++)
             {
                 if (votes[i][j] < 0 || votes[i][j] > 5)
-                    System.out.println("ERROR: SCORE OUT OF BOUNDS");
+                    System.out.println("ERROR: SCORE OUT OF BOUNDS"); // REPLACE WITH BETTER ERROR HANDLING
                 else
                     tally[j] = tally[j] + votes[i][j];
             }
@@ -190,8 +265,20 @@ public class StarCalc {
             
             tiedWinnerIndexes = eliminationRounds(choices, tiedWinnerIndexes, votes, 2);
 
-            outcome = runoff(choices, tiedWinnerIndexes.get(0), tiedWinnerIndexes.get(1), votes);
-            results = results + outcome[1];
+            if (tiedWinnerIndexes.size() == 1)
+                outcome[0] = choices[tiedWinnerIndexes.get(0)];
+            else if (tiedWinnerIndexes.size() == 2)
+            {
+                outcome = runoff(choices, tiedWinnerIndexes.get(0), tiedWinnerIndexes.get(1), votes);
+                results = results + outcome[1];
+            }
+            else 
+            {
+                outcome[0] = "Tie between " + choices[tiedWinnerIndexes.get(0)];
+                for (int i=1; i < tiedWinnerIndexes.size() - 1; i++)
+                    outcome[0] = outcome[0] + ", " + choices[tiedWinnerIndexes.get(i)];
+                outcome[0] = outcome[0] + " and " + choices[tiedWinnerIndexes.get(tiedWinnerIndexes.size()-1)];
+            }
         }
         else if(tieTwo == true)
         {
@@ -199,8 +286,15 @@ public class StarCalc {
 
             tiedWinnerIndexes = eliminationRounds(choices, tiedWinnerIndexes, votes, 1);
 
-            outcome = runoff(choices, winnerIndex[0], tiedWinnerIndexes.get(0), votes);
-            results = results + outcome[1];
+            if (tiedWinnerIndexes.size() == 1)
+            {
+                outcome = runoff(choices, winnerIndex[0], tiedWinnerIndexes.get(0), votes);
+                results = results + outcome[1];
+            }
+            else
+            {
+                outcome[0] = choices[winnerIndex[0]];
+            }
         }
         else
         {
