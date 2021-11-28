@@ -11,6 +11,7 @@ public class Calculator
         
         switch(votingSystem) {
             case RCV:
+                outcome = RcvCalc.calculate(choices, votes);
                 break;
             case STAR:
                 outcome = StarCalc.calculate(choices, votes);
