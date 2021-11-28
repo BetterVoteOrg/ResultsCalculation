@@ -9,19 +9,14 @@ public class RcvCalc {
     public static int[] tallyFirstChoices(String[] choices, int[][] votes, int roundTracker)
     {
         int[] tally = new int[choices.length];
-        //boolean firstRankFound = false;
-
-        // votes = adjustVotes(votes);
 
         for (int i = 0; i < votes.length; i++)
         {
-            //firstRankFound = false;
             for (int j = 0; j < choices.length; j++)
             {
                 if (votes[i][j] == 1)
                 {
                     tally[j]++;
-                    //firstRankFound = true;
                 }
             }
         }
@@ -136,54 +131,8 @@ public class RcvCalc {
         return indexesToEliminate;
     }
 
-    // SOMETHING IS PROBABLY WRONG HERE
-    // public static int[][] adjustVotes(int[][] votes, ArrayList<Integer> indexesToEliminate)
-    // {
-    //     int rankOfEliminationIndex;
-
-    //     for (int i = 0; i < indexesToEliminate.size(); i++)
-    //     {
-    //         for (int j = 0; j < votes.length; j++)
-    //         {
-    //             rankOfEliminationIndex = votes[j][indexesToEliminate.get(i)];
-
-    //             for (int k = 0; k < votes[0].length; k++)
-    //             {
-    //                 if (votes[j][k] >= rankOfEliminationIndex)
-    //                     votes[j][k]--;
-    //             }
-    //         }
-    //     }
-       
-    //     return votes;
-    // }
-
     public static int[][] adjustVotes(int[][] votes)
     {
-        // for (int i = 0; i < eliminatedIndexes.size(); i++)
-        // {
-        //     for (int j = 0; j < votes.length; j++)
-        //     {
-        //         if (votes[j][eliminatedIndexes.get(eliminatedIndexes.size() - 1 - i)] == 1)
-        //         {
-        //             for (int k = 0; k < votes[0].length; k++)
-        //                 votes[j][k]--;
-                
-        //             for (int l = 0; l < i; l++)
-        //             {
-        //                 for (int m = 0; m < i; m++)
-        //                 {
-        //                     if (votes[j][eliminatedIndexes.get(l)] == 1)
-        //                     {
-        //                         for (int n = 0; n < votes[0].length; n++)
-        //                             votes[j][n]--;
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
-
         for (int i = 0; i < votes.length; i++)
         {
             // As we count through the eliminatedIndexes, we must adjust the votes for all counted eliminatedindexes a number of times equal to the number of counted eliminatedindexes
@@ -191,15 +140,6 @@ public class RcvCalc {
             {
                 for (int k = 0; k <= j; k++)
                 {
-                    // for (int k = j; k >= 0; k--)
-                    // {
-                    //     if (votes[i][eliminatedIndexes.get(k)] == 1)
-                    //     {
-                    //         for (int l = 0; l < votes[0].length; l++)
-                    //             votes[i][l]--;
-                    //     }
-                    // }
-
                     for (int l = 0; l <= j; l++)
                     {
                         if (votes[i][eliminatedIndexes.get(l)] == 1)
@@ -236,8 +176,6 @@ public class RcvCalc {
             else
             {
                 indexesToEliminate = findIndexesToEliminate(choices, tally);
-
-                // votes = adjustVotes(votes, indexesToEliminate);
 
                 for (int i = 0; i < indexesToEliminate.size(); i++)
                     eliminatedIndexes.add(indexesToEliminate.get(i));
