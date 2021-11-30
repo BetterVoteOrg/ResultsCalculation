@@ -50,4 +50,13 @@ public class StarCalcTest
         String[] output = {"Pam", "Jim received a score of 34.\nPam received a score of 34.\nMichael received a score of 12.\nKevin received a score of 34.\nTo break a tie for first place, an elimination round was held where Jim scored lowest on 2 ballot(s), Pam scored lowest on 1 ballot(s) and Kevin scored lowest on 10 ballot(s). Therefore Kevin was eliminated from consideration in the runoff.\nIn the runoff between Jim and Pam, Jim received 2 votes and Pam received 3 votes.\n"};
         assertArrayEquals(output, StarCalc.calculate(choices, votes));
     }
+
+    @Test
+    public void testCalculate5()
+    {
+        String[] choices = {"The Billion Dollar Code", "Silicon Valley", "The Great Hack", "The Social Network", "Ex Machina"};
+        int[][] votes = {{5, 4, 1, 2, 3}, {5, 4, 1, 2, 3}, {5, 4, 1, 2, 3}, {5, 3, 0, 2, 2}, {5, 3, 0, 2, 2}, {5, 3, 0, 2, 2}, {5, 3, 0, 2, 2}, {1, 0, 1, 5, 3}, {1, 0, 1, 5, 3}, {2, 3, 5, 0, 1}, {2, 3, 5, 0, 1}, {2, 3, 5, 0, 1}, {5, 4, 0, 4, 0}, {5, 4, 0, 4, 0}, {1, 0, 1, 1, 4}, {1, 1, 1, 1, 3}};
+        String[] output = {"The Billion Dollar Code", "The Billion Dollar Code received a score of 55.\nSilicon Valley received a score of 42.\nThe Great Hack received a score of 22.\nThe Social Network received a score of 34.\nEx Machina received a score of 33.\nIn the runoff between The Billion Dollar Code and Silicon Valley, The Billion Dollar Code received 12 votes and Silicon Valley received 3 votes.\n"};
+        assertArrayEquals(output, StarCalc.calculate(choices, votes));
+    }
 }

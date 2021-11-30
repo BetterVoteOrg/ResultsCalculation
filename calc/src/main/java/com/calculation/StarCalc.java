@@ -39,9 +39,9 @@ public class StarCalc {
 
             for(int i=2; i < array.length; i++)
             {
-                if (array[i] != maxIndex[0])
+                if (i != maxIndex[0])
                 {
-                    if (array[i] > maxIndex[1])
+                    if (array[i] > array[maxIndex[1]])
                         maxIndex[1] = i;
                 }
             }
